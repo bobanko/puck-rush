@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🟢 Puck Rush</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="./main.js" async></script>
+  </head>
+  <body class="flex-col align-center justify-center">
+    <template id="$tmplCell">
+      <svg class="cell" data-color="red">
+        <use href="./marker.svg#marker" />
+      </svg>
+    </template>
+    <div id="$cellGrid" class="cell-grid gameboard-frame">
+      <!-- cells will be generated here -->
+      <svg class="cell" data-color="green" data-col="0" data-row="0">
+        <use href="./marker.svg#marker"></use>
+      </svg>
+    </div>
+  </body>
+</html>

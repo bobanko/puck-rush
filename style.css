@@ -1,0 +1,37 @@
+@import url(./reset.css);
+@import url(./helpers.css);
+@import url(./cell-grid.css);
+
+body {
+  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
+
+  background-color: #94959d;
+}
+
+.gameboard-frame {
+  background-color: #4c4e4c;
+  border: 1vmin solid black;
+  border-radius: 10vmin;
+}
+
+/* colors */
+[data-color="red"] {
+  color: red;
+}
+[data-color="green"] {
+  color: forestgreen;
+}
+[data-color="blue"] {
+  color: dodgerblue;
+}
+[data-color="yellow"] {
+  color: gold;
+}
+[data-color="purple"] {
+  color: rebeccapurple;
+}
+[data-color="empty"] {
+  visibility: hidden;
+}
