@@ -42,6 +42,7 @@ function moveCell($cell, direction = null) {
         {
           transform: "translateX(0%)",
         },
+        { transform: "scale(0.9)" },
         animDirections[direction],
       ],
       {
@@ -56,6 +57,7 @@ function moveCell($cell, direction = null) {
       // todo(vmyshko): callback?
 
       swapCellColors($cell, getEmptyCell());
+      clickInProgress = false;
     });
 }
 
@@ -106,13 +108,25 @@ function createCells() {
 
 createCells();
 
-$cellGrid.addEventListener("click", (event) => {
+// sub to events
+$cellGrid.addEventListener("mousedown", handleClickEvent);
+$cellGrid.addEventListener("touchstart", handleClickEvent);
+
+// todo(vmyshko): do it better, prevent multiple click while animation in progress
+let clickInProgress = false;
+function handleClickEvent(event) {
+  event.preventDefault(); //prevent both touch and click
+
   const $currentCell = event.target;
   if (!$currentCell.classList.contains("cell")) return;
 
   // can't move emptiness
   const $emptyCell = getEmptyCell();
   if ($currentCell === $emptyCell) return;
+
+  if (clickInProgress) return;
+
+  clickInProgress = true;
 
   // get positions
   const { col: currentCol, row: currentRow } = getCellPosition($currentCell);
@@ -134,7 +148,27 @@ $cellGrid.addEventListener("click", (event) => {
     } else if (rowDiff === -1) {
       moveCell($currentCell, directions.down);
     }
+  } else {
+    // can't move
+
+    $currentCell.animate(
+      [
+        {},
+        {
+          transform: "scale(0.9)",
+        },
+        {},
+      ],
+      {
+        duration: 200,
+        iterations: 1,
+        // fill: "both",
+        easing: "ease-in-out",
+      }
+    );
+
+    clickInProgress = false;
   }
 
   console.log($currentCell);
-});
+}
