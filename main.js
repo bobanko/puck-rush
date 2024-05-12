@@ -81,7 +81,7 @@ function getCellPosition($cell) {
   return { col: +col, row: +row };
 }
 
-function createCells() {
+function createGameBoardCells() {
   // create cells
   $cellGrid.replaceChildren();
 
@@ -93,7 +93,7 @@ function createCells() {
 
   for (let rowIndex = 0; rowIndex < rowSize; rowIndex++) {
     for (let colIndex = 0; colIndex < colSize; colIndex++) {
-      const cellFragment = $tmplCell.content.cloneNode(true); //fragment
+      const cellFragment = $tmplBoardCell.content.cloneNode(true); //fragment
       const $cell = cellFragment.firstElementChild;
 
       $cell.dataset.col = colIndex;
@@ -106,7 +106,33 @@ function createCells() {
   }
 }
 
-createCells();
+function createTargetCardCells() {
+  // create cells
+  $targetCard.replaceChildren();
+
+  const colorsToUse = [
+    [colors.red, colors.green, colors.blue],
+    [colors.yellow, colors.empty, colors.purple],
+    [colors.green, colors.yellow, colors.red],
+  ];
+
+  for (let rowIndex = 0; rowIndex < rowSize; rowIndex++) {
+    for (let colIndex = 0; colIndex < colSize; colIndex++) {
+      const cellFragment = $tmplTargetCardCell.content.cloneNode(true); //fragment
+      const $cell = cellFragment.firstElementChild;
+
+      $cell.dataset.col = colIndex;
+      $cell.dataset.row = rowIndex;
+
+      $cell.dataset.color = colorsToUse[rowIndex][colIndex];
+
+      $targetCard.appendChild($cell);
+    }
+  }
+}
+
+createGameBoardCells();
+createTargetCardCells();
 
 // sub to events
 $cellGrid.addEventListener("mousedown", handleClickEvent);

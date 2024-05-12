@@ -35,3 +35,21 @@ body {
 [data-color="empty"] {
   visibility: hidden;
 }
+
+.main {
+  justify-content: space-evenly;
+  gap: 10vmin;
+}
+
+.target-card {
+  width: 50vmin;
+  height: 50vmin;
+
+  background-color: #f7f4f1;
+  border: 1vmin solid rgba(0, 0, 0, 0.5);
+  border-radius: 3vmin;
+}
+
+.target-card .cell {
+  padding: 1vmin;
+}
