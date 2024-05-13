@@ -53,3 +53,15 @@ body {
 .target-card .cell {
   padding: 1vmin;
 }
+
+.bell {
+  aspect-ratio: 1 / 1;
+  width: 30vmin;
+  /* height: 20vmin; */
+}
+
+.card-holder {
+  justify-content: space-around;
+  align-items: center;
+  gap: 5vmin;
+}

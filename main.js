@@ -19,7 +19,7 @@ const directions = {
 };
 
 const animations = {
-  wrong: [
+  press: [
     [
       {},
       {
@@ -35,7 +35,7 @@ const animations = {
   ],
 };
 
-function moveCell($cell, direction = null) {
+function moveCell($cell, direction = null, duration = 300) {
   const animDirections = {
     [directions.up]: {
       transform: "translateY(-100%)",
@@ -63,7 +63,7 @@ function moveCell($cell, direction = null) {
         animDirections[direction],
       ],
       {
-        duration: 300,
+        duration,
         iterations: 1,
         // fill: "both",
         easing: "ease-in-out",
@@ -185,13 +185,15 @@ function checkWin() {
 $cellGrid.addEventListener("mousedown", handleClickEvent);
 $cellGrid.addEventListener("touchstart", handleClickEvent);
 
-$targetCard.addEventListener("click", () => {
+$bell.addEventListener("click", () => {
   const { isWin, wrongCells } = checkWin();
+
+  $bell.animate(...animations.press);
 
   if (!isWin) {
     console.log("no win");
     wrongCells.forEach(($cell) => {
-      $cell.animate(...animations.wrong);
+      $cell.animate(...animations.press);
     });
   } else {
     console.log("🏆 you win");
@@ -241,7 +243,7 @@ function handleClickEvent(event) {
   } else {
     // can't move
 
-    $currentCell.animate(...animations.wrong);
+    $currentCell.animate(...animations.press);
 
     clickInProgress = false;
   }

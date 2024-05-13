@@ -16,11 +16,17 @@
         </svg>
       </template>
 
-      <div id="$targetCard" class="cell-grid target-card">
-        <!-- cells will be generated here -->
-        <svg class="cell" data-color="green">
-          <use href="./card-item.svg#card" />
+      <div class="card-holder flex align-center justify-center">
+        <svg id="$bell" class="bell" data-color="yellow">
+          <use href="./bell.svg#bell" />
         </svg>
+
+        <div id="$targetCard" class="cell-grid target-card">
+          <!-- cells will be generated here -->
+          <svg class="cell" data-color="green">
+            <use href="./card-item.svg#card" />
+          </svg>
+        </div>
       </div>
 
       <template id="$tmplBoardCell">
