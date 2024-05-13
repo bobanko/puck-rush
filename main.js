@@ -18,6 +18,23 @@ const directions = {
   left: "left",
 };
 
+const animations = {
+  wrong: [
+    [
+      {},
+      {
+        transform: "scale(0.9)",
+      },
+      {},
+    ],
+    {
+      duration: 200,
+      iterations: 1,
+      easing: "ease-in-out",
+    },
+  ],
+};
+
 function moveCell($cell, direction = null) {
   const animDirections = {
     [directions.up]: {
@@ -81,15 +98,11 @@ function getCellPosition($cell) {
   return { col: +col, row: +row };
 }
 
-function createGameBoardCells() {
+function createGameBoardCells(colorsUsed) {
   // create cells
   $cellGrid.replaceChildren();
 
-  const colorsToUse = [
-    [colors.red, colors.green, colors.blue],
-    [colors.yellow, colors.empty, colors.purple],
-    [colors.green, colors.yellow, colors.red],
-  ];
+  const colorsToUse = colorsUsed.slice();
 
   for (let rowIndex = 0; rowIndex < rowSize; rowIndex++) {
     for (let colIndex = 0; colIndex < colSize; colIndex++) {
@@ -99,23 +112,34 @@ function createGameBoardCells() {
       $cell.dataset.col = colIndex;
       $cell.dataset.row = rowIndex;
 
-      $cell.dataset.color = colorsToUse[rowIndex][colIndex];
+      $cell.dataset.color = colorsToUse.shift();
 
       $cellGrid.appendChild($cell);
     }
   }
 }
 
+function pickRandom(array) {
+  const randomIndex = Math.floor(Math.random() * array.length);
+  return array[randomIndex];
+}
+
 function createTargetCardCells() {
   // create cells
   $targetCard.replaceChildren();
 
-  const colorsToUse = [
-    [colors.red, colors.green, colors.blue],
-    [colors.yellow, colors.empty, colors.purple],
-    [colors.green, colors.yellow, colors.red],
-  ];
+  const colorValues = Object.values(colors);
+  colorValues.pop(); //remove empty color
 
+  const colorsToUse = [colors.empty];
+
+  for (let iteration = 0; iteration < rowSize * colSize - 1; iteration++) {
+    const randomColor = pickRandom(colorValues);
+
+    colorsToUse.push(randomColor);
+  }
+
+  const colorsUsed = colorsToUse.slice();
   for (let rowIndex = 0; rowIndex < rowSize; rowIndex++) {
     for (let colIndex = 0; colIndex < colSize; colIndex++) {
       const cellFragment = $tmplTargetCardCell.content.cloneNode(true); //fragment
@@ -124,19 +148,59 @@ function createTargetCardCells() {
       $cell.dataset.col = colIndex;
       $cell.dataset.row = rowIndex;
 
-      $cell.dataset.color = colorsToUse[rowIndex][colIndex];
+      $cell.dataset.color = colorsToUse.pop();
 
       $targetCard.appendChild($cell);
     }
   }
+
+  return colorsUsed;
 }
 
-createGameBoardCells();
-createTargetCardCells();
+function initGame() {
+  const colorsUsed = createTargetCardCells();
+  createGameBoardCells(colorsUsed);
+}
+
+initGame();
+
+function checkWin() {
+  const targetCells = [...$targetCard.children];
+  const gridCells = [...$cellGrid.children];
+
+  const wrongCells = [];
+  for (let cellIndex = 0; cellIndex < targetCells.length; cellIndex++) {
+    const $targetCell = targetCells[cellIndex];
+    const $gridCell = gridCells[cellIndex];
+
+    if ($targetCell.dataset.color !== $gridCell.dataset.color) {
+      wrongCells.push($gridCell);
+    }
+  }
+
+  return { isWin: wrongCells.length === 0, wrongCells };
+}
 
 // sub to events
 $cellGrid.addEventListener("mousedown", handleClickEvent);
 $cellGrid.addEventListener("touchstart", handleClickEvent);
+
+$targetCard.addEventListener("click", () => {
+  const { isWin, wrongCells } = checkWin();
+
+  if (!isWin) {
+    console.log("no win");
+    wrongCells.forEach(($cell) => {
+      $cell.animate(...animations.wrong);
+    });
+  } else {
+    console.log("🏆 you win");
+
+    // todo(vmyshko): regen
+
+    initGame();
+  }
+});
 
 // todo(vmyshko): do it better, prevent multiple click while animation in progress
 let clickInProgress = false;
@@ -177,21 +241,7 @@ function handleClickEvent(event) {
   } else {
     // can't move
 
-    $currentCell.animate(
-      [
-        {},
-        {
-          transform: "scale(0.9)",
-        },
-        {},
-      ],
-      {
-        duration: 200,
-        iterations: 1,
-        // fill: "both",
-        easing: "ease-in-out",
-      }
-    );
+    $currentCell.animate(...animations.wrong);
 
     clickInProgress = false;
   }
