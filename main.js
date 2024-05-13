@@ -225,7 +225,7 @@ function handleClickEvent(event) {
   const { col: emptyCol, row: emptyRow } = getCellPosition($emptyCell);
 
   // calc if can move
-
+  // todo(vmyshko): extract to separate methods
   const colDiff = currentCol - emptyCol;
   const rowDiff = currentRow - emptyRow;
   if (Math.abs(colDiff) + Math.abs(rowDiff) === 1) {
@@ -244,7 +244,6 @@ function handleClickEvent(event) {
     // can't move
 
     $currentCell.animate(...animations.press);
-
     clickInProgress = false;
   }
 
