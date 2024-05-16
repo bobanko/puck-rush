@@ -1,3 +1,5 @@
+export { seededRandom } from "./seeded-random.js";
+
 export function createMatrix({ rowSize, colSize, defaultValue = 0 }) {
   return Array(rowSize)
     .fill(null)

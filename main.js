@@ -1,4 +1,4 @@
-import { createMatrix, deepCopyMatrix } from "./helpers.js";
+import { createMatrix, deepCopyMatrix, seededRandom } from "./helpers.js";
 
 const rowSize = 3;
 const colSize = 3;
@@ -37,6 +37,19 @@ const animations = {
       duration: 200,
       iterations: 1,
       easing: "ease-in-out",
+    },
+  ],
+  shake: [
+    [
+      { transform: "rotate(-10deg)" },
+      {
+        transform: "rotate(5deg)",
+      },
+      {},
+    ],
+    {
+      duration: 300,
+      iterations: 1,
     },
   ],
 };
@@ -104,8 +117,18 @@ function getCellPosition($cell) {
   return { col: +col, row: +row };
 }
 
+let seed;
+{
+  const [hashFlag, hashValue] = location.hash.split("=");
+  if (hashFlag === "#seed") {
+    seed = hashValue;
+  }
+}
+
+const random = seededRandom(seed);
+
 function pickRandom(array) {
-  const randomIndex = Math.floor(Math.random() * array.length);
+  const randomIndex = Math.floor(random() * array.length);
   return array[randomIndex];
 }
 
@@ -281,6 +304,8 @@ $bell.addEventListener("click", () => {
     wrongCells.forEach(($cell) => {
       $cell.animate(...animations.press);
     });
+
+    $targetCard.animate(...animations.shake);
   } else {
     console.log("🏆 you win");
 
