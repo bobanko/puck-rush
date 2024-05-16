@@ -210,11 +210,14 @@ function getPossibleMoves({ emptyPos }) {
 
   for (let row = 0; row < rowSize; row++) {
     for (let col = 0; col < colSize; col++) {
-      const dir = checkMoveDirection({ puckPos: { row, col }, emptyPos });
+      const direction = checkMoveDirection({
+        puckPos: { row, col },
+        emptyPos,
+      });
 
-      if (dir === directions.none) continue;
+      if (direction === directions.none) continue;
 
-      possibleMoves.push({ row, col, direction: dir });
+      possibleMoves.push({ row, col, direction: direction });
     }
   }
 
@@ -237,11 +240,27 @@ function shufflePucks({ mtx, steps = 50 }) {
 
   const emptyPos = { row, col };
 
+  const dirAntagonists = {
+    [directions.up]: directions.down,
+    [directions.right]: directions.left,
+    [directions.down]: directions.up,
+    [directions.left]: directions.right,
+  };
+
+  let prevDirection = null;
+
   for (let step = 0; step < steps; step++) {
     const moves = getPossibleMoves({ emptyPos });
 
+    const cleanMoves = moves.filter((move) => {
+      // next direction should not be antagonist of prev
+      return move.direction !== dirAntagonists[prevDirection];
+    });
+
     // random move
-    const { col, row, direction } = pickRandom(moves);
+    const { col, row, direction } = pickRandom(cleanMoves);
+
+    prevDirection = direction;
 
     swapPucks({
       mtx: mtxShuffled,
@@ -333,17 +352,17 @@ function handleClickEvent(event) {
 
   // get positions
 
-  const dir = checkMoveDirection({
+  const direction = checkMoveDirection({
     puckPos: getCellPosition($currentCell),
     emptyPos: getCellPosition($emptyCell),
   });
 
-  if (dir === directions.none) {
+  if (direction === directions.none) {
     // can't move
 
     $currentCell.animate(...animations.press);
     clickInProgress = false; // todo(vmyshko): make moving queue instead
   } else {
-    moveCell($currentCell, dir);
+    moveCell($currentCell, direction);
   }
 }
