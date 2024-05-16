@@ -1,53 +1,8 @@
-<svg id="bell" viewBox="0 0 527 527" fill="hotpink" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_20_357)">
-<circle cx="255" cy="255" r="250" fill="#5C5C5C"/>
-<circle cx="255" cy="255" r="245.833" stroke="black" stroke-opacity="0.51" stroke-width="8.33333"/>
-</g>
-<g filter="url(#filter1_d_20_357)">
-<circle cx="255.833" cy="254.167" r="229.167" fill="url(#paint0_radial_20_357)"/>
-<circle cx="255.833" cy="254.167" r="225" stroke="white" stroke-opacity="0.2" stroke-width="8.33333"/>
-</g>
-<g filter="url(#filter2_d_20_357)">
-<circle cx="255.833" cy="254.167" r="62.5" fill="#2D2D2D"/>
-</g>
-<defs>
-<filter id="filter0_d_20_357" x="0" y="0" width="526.667" height="526.667" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feMorphology radius="6.66667" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_20_357"/>
-<feOffset dx="8.33333" dy="8.33333"/>
-<feGaussianBlur stdDeviation="3.33333"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_20_357"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_20_357" result="shape"/>
-</filter>
-<filter id="filter1_d_20_357" x="13.3333" y="11.6667" width="485" height="485" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feMorphology radius="6.66667" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_20_357"/>
-<feOffset/>
-<feGaussianBlur stdDeviation="3.33333"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_20_357"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_20_357" result="shape"/>
-</filter>
-<filter id="filter2_d_20_357" x="181.667" y="180" width="161.667" height="161.667" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feMorphology radius="8.33333" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_20_357"/>
-<feOffset dx="6.66667" dy="6.66667"/>
-<feGaussianBlur stdDeviation="5"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_20_357"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_20_357" result="shape"/>
-</filter>
-<radialGradient id="paint0_radial_20_357" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(255.833 254.167) rotate(90) scale(229.167)">
-<stop offset="0.115" stop-color="#FBB6D8"/>
-<stop offset="0.87" stop-color="#C84682"/>
-<stop offset="1" stop-color="#E685B2"/>
-</radialGradient>
-</defs>
+<svg id="bell" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="250" cy="250" r="250" fill="#5C5C5C"/>
+<circle cx="250" cy="250" r="245" stroke="black" stroke-opacity="0.5" stroke-width="10"/>
+<circle cx="250.833" cy="249.167" r="229.167" fill="#FF69B4"/>
+<circle cx="250.833" cy="249.167" r="204.167" stroke="black" stroke-opacity="0.1" stroke-width="50"/>
+<circle cx="250.833" cy="249.167" r="62.5" fill="#2D2D2D" fill-opacity="0.8"/>
+<circle cx="250.833" cy="249.167" r="67.5" stroke="black" stroke-opacity="0.8" stroke-width="10"/>
 </svg>
