@@ -1,5 +1,9 @@
+import { createMatrix, deepCopyMatrix } from "./helpers.js";
+
 const rowSize = 3;
 const colSize = 3;
+
+const initialEmptyCoords = { row: rowSize - 1, col: Math.floor(colSize / 2) };
 
 const colors = {
   red: "red",
@@ -16,6 +20,8 @@ const directions = {
   right: "right",
   down: "down",
   left: "left",
+  //
+  none: "none",
 };
 
 const animations = {
@@ -98,68 +104,148 @@ function getCellPosition($cell) {
   return { col: +col, row: +row };
 }
 
-function createGameBoardCells(colorsUsed) {
-  // create cells
-  $cellGrid.replaceChildren();
-
-  const colorsToUse = colorsUsed.slice();
-
-  for (let rowIndex = 0; rowIndex < rowSize; rowIndex++) {
-    for (let colIndex = 0; colIndex < colSize; colIndex++) {
-      const cellFragment = $tmplBoardCell.content.cloneNode(true); //fragment
-      const $cell = cellFragment.firstElementChild;
-
-      $cell.dataset.col = colIndex;
-      $cell.dataset.row = rowIndex;
-
-      $cell.dataset.color = colorsToUse.shift();
-
-      $cellGrid.appendChild($cell);
-    }
-  }
-}
-
 function pickRandom(array) {
   const randomIndex = Math.floor(Math.random() * array.length);
   return array[randomIndex];
 }
 
-function createTargetCardCells() {
-  // create cells
-  $targetCard.replaceChildren();
+function fillTarget() {
+  const mtxTarget = createMatrix({
+    rowSize,
+    colSize,
+    defaultValue: colors.empty,
+  });
 
   const colorValues = Object.values(colors);
   colorValues.pop(); //remove empty color
 
-  const colorsToUse = [colors.empty];
-
-  for (let iteration = 0; iteration < rowSize * colSize - 1; iteration++) {
-    const randomColor = pickRandom(colorValues);
-
-    colorsToUse.push(randomColor);
+  for (let row = 0; row < rowSize; row++) {
+    for (let col = 0; col < colSize; col++) {
+      mtxTarget[row][col] = pickRandom(colorValues);
+    }
   }
 
-  const colorsUsed = colorsToUse.slice();
+  //set one empty cell
+  mtxTarget[initialEmptyCoords.row][initialEmptyCoords.col] = colors.empty;
+
+  return mtxTarget;
+}
+
+function createCells({ mtx, $container, $template }) {
+  // create ui based on mtx
+  $container.replaceChildren();
+
   for (let rowIndex = 0; rowIndex < rowSize; rowIndex++) {
     for (let colIndex = 0; colIndex < colSize; colIndex++) {
-      const cellFragment = $tmplTargetCardCell.content.cloneNode(true); //fragment
+      const cellFragment = $template.content.cloneNode(true); //fragment
       const $cell = cellFragment.firstElementChild;
 
       $cell.dataset.col = colIndex;
       $cell.dataset.row = rowIndex;
 
-      $cell.dataset.color = colorsToUse.pop();
+      $cell.dataset.color = mtx[rowIndex][colIndex];
 
-      $targetCard.appendChild($cell);
+      $container.appendChild($cell);
+    }
+  }
+}
+
+function createTargetCardCells(mtx) {
+  createCells({ mtx, $container: $targetCard, $template: $tmplTargetCardCell });
+}
+
+function createGameBoardCells(mtx) {
+  createCells({ mtx, $container: $cellGrid, $template: $tmplBoardCell });
+}
+
+function checkMoveDirection({ puckPos, emptyPos }) {
+  const colDiff = puckPos.col - emptyPos.col;
+  const rowDiff = puckPos.row - emptyPos.row;
+
+  // todo(vmyshko): impl 2-at-once move?
+
+  const moveDistance = Math.abs(colDiff) + Math.abs(rowDiff);
+
+  if (moveDistance !== 1) {
+    return directions.none;
+  }
+
+  // in distance of 1 -- can move
+  if (colDiff === 1) {
+    return directions.left;
+  } else if (colDiff === -1) {
+    return directions.right;
+  } else if (rowDiff === 1) {
+    return directions.up;
+  } else if (rowDiff === -1) {
+    return directions.down;
+  }
+}
+
+function getPossibleMoves({ emptyPos }) {
+  const possibleMoves = [];
+
+  for (let row = 0; row < rowSize; row++) {
+    for (let col = 0; col < colSize; col++) {
+      const dir = checkMoveDirection({ puckPos: { row, col }, emptyPos });
+
+      if (dir === directions.none) continue;
+
+      possibleMoves.push({ row, col, direction: dir });
     }
   }
 
-  return colorsUsed;
+  return possibleMoves;
+}
+
+function swapPucks({ mtx, puckPos, emptyPos }) {
+  [
+    mtx[puckPos.row][puckPos.col], //
+    mtx[emptyPos.row][emptyPos.col],
+  ] = [
+    mtx[emptyPos.row][emptyPos.col], //
+    mtx[puckPos.row][puckPos.col],
+  ];
+}
+
+function shufflePucks({ mtx, steps = 50 }) {
+  const mtxShuffled = deepCopyMatrix(mtx);
+  let { row, col } = initialEmptyCoords;
+
+  const emptyPos = { row, col };
+
+  for (let step = 0; step < steps; step++) {
+    const moves = getPossibleMoves({ emptyPos });
+
+    // random move
+    const { col, row, direction } = pickRandom(moves);
+
+    swapPucks({
+      mtx: mtxShuffled,
+      puckPos: { col, row },
+      emptyPos,
+    });
+
+    // update empty pos
+    emptyPos.col = col;
+    emptyPos.row = row;
+  }
+
+  return mtxShuffled;
 }
 
 function initGame() {
-  const colorsUsed = createTargetCardCells();
-  createGameBoardCells(colorsUsed);
+  const mtxTarget = fillTarget();
+  createTargetCardCells(mtxTarget);
+
+  const mtxPucks = deepCopyMatrix(mtxTarget);
+  // todo(vmyshko): shuffle
+
+  const mtxPucksShuffled = shufflePucks({ mtx: mtxPucks });
+
+  console.log(mtxPucksShuffled);
+
+  createGameBoardCells(mtxPucksShuffled);
 }
 
 initGame();
@@ -221,31 +307,18 @@ function handleClickEvent(event) {
   clickInProgress = true;
 
   // get positions
-  const { col: currentCol, row: currentRow } = getCellPosition($currentCell);
-  const { col: emptyCol, row: emptyRow } = getCellPosition($emptyCell);
 
-  // calc if can move
-  // todo(vmyshko): extract to separate methods
-  const colDiff = currentCol - emptyCol;
-  const rowDiff = currentRow - emptyRow;
-  if (Math.abs(colDiff) + Math.abs(rowDiff) === 1) {
-    // in distance of 1 -- can move
+  const dir = checkMoveDirection({
+    puckPos: getCellPosition($currentCell),
+    emptyPos: getCellPosition($emptyCell),
+  });
 
-    if (colDiff === 1) {
-      moveCell($currentCell, directions.left);
-    } else if (colDiff === -1) {
-      moveCell($currentCell, directions.right);
-    } else if (rowDiff === 1) {
-      moveCell($currentCell, directions.up);
-    } else if (rowDiff === -1) {
-      moveCell($currentCell, directions.down);
-    }
-  } else {
+  if (dir === directions.none) {
     // can't move
 
     $currentCell.animate(...animations.press);
-    clickInProgress = false;
+    clickInProgress = false; // todo(vmyshko): make moving queue instead
+  } else {
+    moveCell($currentCell, dir);
   }
-
-  console.log($currentCell);
 }
