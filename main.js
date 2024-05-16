@@ -1,7 +1,24 @@
 import { createMatrix, deepCopyMatrix, seededRandom } from "./helpers.js";
 
-const rowSize = 3;
-const colSize = 3;
+let rowSize = 3;
+let colSize = 3;
+
+let seed;
+{
+  const [hashFlag, hashValue] = location.hash.split("=");
+  if (hashFlag === "#seed") {
+    seed = hashValue;
+  } else if (hashFlag === "#size") {
+    [colSize, rowSize] = hashValue.split("x").map((value) => +value);
+  }
+}
+const random = seededRandom(seed);
+
+{
+  const $root = document.querySelector(":root");
+  $root.style.setProperty("--colSize", colSize);
+  $root.style.setProperty("--rowSize", rowSize);
+}
 
 const initialEmptyCoords = { row: rowSize - 1, col: Math.floor(colSize / 2) };
 
@@ -103,16 +120,6 @@ function getCellData($cell) {
 
   return { col: +col, row: +row, color };
 }
-
-let seed;
-{
-  const [hashFlag, hashValue] = location.hash.split("=");
-  if (hashFlag === "#seed") {
-    seed = hashValue;
-  }
-}
-
-const random = seededRandom(seed);
 
 function pickRandom(array) {
   const randomIndex = Math.floor(random() * array.length);

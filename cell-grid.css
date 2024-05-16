@@ -1,16 +1,17 @@
 :root {
-  --cellCount: 9;
+  --colSize: 3;
+  --rowSize: 3;
 }
 
 .cell-grid {
   display: grid;
-  grid-template-columns: repeat(pow(var(--cellCount), 0.5), 1fr);
+  grid-template-columns: repeat(var(--colSize), 1fr);
   grid-column-gap: 0;
   grid-row-gap: 0;
 
   box-sizing: border-box;
 
-  aspect-ratio: 1 / 1;
+  aspect-ratio: var(--colSize) / var(--rowSize);
   height: 100vmin;
 }
 
