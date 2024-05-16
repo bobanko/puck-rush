@@ -12,25 +12,27 @@ https://bobanko.github.io/puck-rush/
 # TODO:
 
 [ ] better shuffle with no-win check  
-[ ] fix click rate for speed runners
 [ ] make WASD/arrows control - it should be easier to remix  
 [ ] add timer  
-[ ] fix iphone layout(?)
-[ ] add seeded random to compete with others at the same level  
+[ ] fix iphone layout(?)  
 [ ] add difficulty levels (more/less colors, 4x4? 2x2 for speed dro4ers?)  
 [ ] add restart button  
 [ ] add settings?  
-[ ] use matrix-first approach?  
+[~] use matrix-first approach?  
 [ ] make 2 empty cells mode? (problems with WASD/click controls)  
 [ ] make leaderboards  
 [ ] make live multiplayer (scan qr/share link?)  
 [ ] make async mulitplayer (when you beat specific seeded map)  
-[ ] make 'connected' cells for target card (like locker/shelf doors from screens)
+[ ] make 'connected' cells for target card (like locker/shelf doors from screens)  
+[ ] add competition mode with others at the same level
 
 ## done
 
-[x] add seeded random for leveling
-[x] initial true shuffle
+[x] fix click rate for speed runners  
+[x] add seeded random to compete with others at the same level  
+[x] better shuffle with forward-back check  
+[x] add seeded random for leveling  
+[x] initial true shuffle  
 [x] fix animation for mobile
 
 ## ui improvements

@@ -54,7 +54,7 @@ const animations = {
   ],
 };
 
-function moveCell($cell, direction = null, duration = 300) {
+function animateMoveCell({ $cell, direction = null, callback }) {
   const animDirections = {
     [directions.up]: {
       transform: "translateY(-100%)",
@@ -82,27 +82,14 @@ function moveCell($cell, direction = null, duration = 300) {
         animDirections[direction],
       ],
       {
-        duration,
+        duration: 200,
         iterations: 1,
         // fill: "both",
         easing: "ease-in-out",
       }
     )
-    .addEventListener("finish", () => {
-      console.log("anim finished");
-      // todo(vmyshko): callback?
-
-      swapCellColors($cell, getEmptyCell());
-      clickInProgress = false;
-    });
-}
-
-function swapCellColors($cell1, $cell2) {
-  const { color: color1 } = $cell1.dataset;
-  const { color: color2 } = $cell2.dataset;
-
-  $cell1.dataset.color = color2;
-  $cell2.dataset.color = color1;
+    // todo(vmyshko): replace to promise
+    .addEventListener("finish", callback);
 }
 
 function getEmptyCell() {
@@ -111,10 +98,10 @@ function getEmptyCell() {
   return $emptyCell;
 }
 
-function getCellPosition($cell) {
-  const { col, row } = $cell.dataset;
+function getCellData($cell) {
+  const { col, row, color } = $cell.dataset;
 
-  return { col: +col, row: +row };
+  return { col: +col, row: +row, color };
 }
 
 let seed;
@@ -169,6 +156,22 @@ function createCells({ mtx, $container, $template }) {
       $cell.dataset.color = mtx[rowIndex][colIndex];
 
       $container.appendChild($cell);
+    }
+  }
+}
+
+function updateCells({ mtx, $container }) {
+  const cells = [...$container.children];
+  // just update datasets
+  for (let rowIndex = 0; rowIndex < rowSize; rowIndex++) {
+    for (let colIndex = 0; colIndex < colSize; colIndex++) {
+      const $cell = cells.shift();
+
+      // update cell from mtx
+      $cell.dataset.col = colIndex;
+      $cell.dataset.row = rowIndex;
+
+      $cell.dataset.color = mtx[rowIndex][colIndex];
     }
   }
 }
@@ -273,11 +276,19 @@ function shufflePucks({ mtx, steps = 50 }) {
     emptyPos.row = row;
   }
 
+  _emptyPos = emptyPos;
+
   return mtxShuffled;
 }
 
+// todo(vmyshko): move to game.class or smth..
+let _mtxTarget = null;
+let _mtxPucks = null;
+let _emptyPos = null;
 function initGame() {
   const mtxTarget = fillTarget();
+  _mtxTarget = mtxTarget;
+
   createTargetCardCells(mtxTarget);
 
   const mtxPucks = deepCopyMatrix(mtxTarget);
@@ -285,7 +296,8 @@ function initGame() {
 
   const mtxPucksShuffled = shufflePucks({ mtx: mtxPucks });
 
-  console.log(mtxPucksShuffled);
+  _mtxPucks = mtxPucksShuffled;
+  console.log("🆕 new level", mtxTarget, mtxPucksShuffled);
 
   createGameBoardCells(mtxPucksShuffled);
 }
@@ -334,35 +346,52 @@ $bell.addEventListener("click", () => {
   }
 });
 
-// todo(vmyshko): do it better, prevent multiple click while animation in progress
-let clickInProgress = false;
+// todo(vmyshko): click logic:
+// register click
+// check posibility
+// do swap in matrix
+// start anim
+
 function handleClickEvent(event) {
   event.preventDefault(); //prevent both touch and click
 
   const $currentCell = event.target;
   if (!$currentCell.classList.contains("cell")) return;
+  // ---------
+
+  const { row, col, color } = getCellData($currentCell);
 
   // can't move emptiness
-  const $emptyCell = getEmptyCell();
-  if ($currentCell === $emptyCell) return;
-
-  if (clickInProgress) return;
-
-  clickInProgress = true;
-
-  // get positions
+  if (color === colors.empty) return;
 
   const direction = checkMoveDirection({
-    puckPos: getCellPosition($currentCell),
-    emptyPos: getCellPosition($emptyCell),
+    puckPos: { row, col },
+    emptyPos: _emptyPos,
   });
 
   if (direction === directions.none) {
     // can't move
-
     $currentCell.animate(...animations.press);
-    clickInProgress = false; // todo(vmyshko): make moving queue instead
-  } else {
-    moveCell($currentCell, direction);
+    return;
   }
+
+  // instant update matrix
+  swapPucks({
+    mtx: _mtxPucks,
+    puckPos: { row, col },
+    emptyPos: _emptyPos,
+  });
+
+  _emptyPos = { row, col };
+
+  // todo(vmyshko): animate move
+  animateMoveCell({
+    $cell: $currentCell,
+    direction,
+    // await
+    callback: () => {
+      // update ui
+      updateCells({ mtx: _mtxPucks, $container: $cellGrid });
+    },
+  });
 }
