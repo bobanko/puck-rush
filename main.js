@@ -28,6 +28,7 @@ const colors = {
   blue: "blue",
   yellow: "yellow",
   purple: "purple",
+  pink: "pink",
   //
   empty: "empty",
 };
@@ -192,6 +193,7 @@ function createTargetCardCells(mtx) {
     [colors.blue]: "./cards/dice-3.svg#img",
     [colors.yellow]: "./cards/dice-4.svg#img",
     [colors.purple]: "./cards/dice-5.svg#img",
+    [colors.pink]: "./cards/dice-6.svg#img",
     //?
     [colors.empty]: "./cards/dice-6.svg#img",
   };

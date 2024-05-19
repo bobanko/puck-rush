@@ -10,6 +10,12 @@ body {
   background-color: #94959d;
 }
 
+@media only screen and (min-aspect-ratio: 1/2) {
+  section {
+    /* todo: impl landscape mode */
+  }
+}
+
 .gameboard-frame {
   background-color: #4c4e4c;
   border: 1vmin solid black;
@@ -32,6 +38,10 @@ body {
 [data-color="purple"] {
   color: rebeccapurple;
 }
+[data-color="pink"] {
+  color: #ff69b4;
+}
+
 [data-color="empty"] {
   visibility: hidden;
 }
