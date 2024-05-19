@@ -1,0 +1,9 @@
+<svg  id="img" viewBox="0 0 150 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="150" height="150" rx="10" fill="currentColor"/>
+<rect x="2.5" y="2.5" width="145" height="145" rx="7.5" stroke="black" stroke-opacity="0.5" stroke-width="5"/>
+<g opacity="0.2">
+<path d="M52 36C52 44.8366 44.8366 52 36 52C27.1634 52 20 44.8366 20 36C20 27.1634 27.1634 20 36 20C44.8366 20 52 27.1634 52 36Z" fill="black"/>
+<path d="M91 75C91 83.8366 83.8366 91 75 91C66.1634 91 59 83.8366 59 75C59 66.1634 66.1634 59 75 59C83.8366 59 91 66.1634 91 75Z" fill="black"/>
+<path d="M130 114C130 122.837 122.837 130 114 130C105.163 130 98 122.837 98 114C98 105.163 105.163 98 114 98C122.837 98 130 105.163 130 114Z" fill="black"/>
+</g>
+</svg>

@@ -148,7 +148,7 @@ function fillTarget() {
   return mtxTarget;
 }
 
-function createCells({ mtx, $container, $template }) {
+function createCells({ mtx, $container, $template, callback }) {
   // create ui based on mtx
   $container.replaceChildren();
 
@@ -161,6 +161,8 @@ function createCells({ mtx, $container, $template }) {
       $cell.dataset.row = rowIndex;
 
       $cell.dataset.color = mtx[rowIndex][colIndex];
+
+      callback?.({ $cell, colIndex, rowIndex });
 
       $container.appendChild($cell);
     }
@@ -184,7 +186,28 @@ function updateCells({ mtx, $container }) {
 }
 
 function createTargetCardCells(mtx) {
-  createCells({ mtx, $container: $targetCard, $template: $tmplTargetCardCell });
+  const dices = {
+    [colors.red]: "./cards/dice-1.svg#img",
+    [colors.green]: "./cards/dice-2.svg#img",
+    [colors.blue]: "./cards/dice-3.svg#img",
+    [colors.yellow]: "./cards/dice-4.svg#img",
+    [colors.purple]: "./cards/dice-5.svg#img",
+    //?
+    [colors.empty]: "./cards/dice-6.svg#img",
+  };
+
+  createCells({
+    mtx,
+    $container: $targetCard,
+    $template: $tmplTargetCardCell,
+    callback: ({ $cell }) => {
+      // todo(vmyshko): apply random img
+
+      const $use = $cell.querySelector("use");
+
+      $use.href.baseVal = dices[$cell.dataset.color];
+    },
+  });
 }
 
 function createGameBoardCells(mtx) {
