@@ -9,12 +9,16 @@ then click the bell ASAP!
 
 https://bobanko.github.io/puck-rush/
 
-# TODO:
+# Backlog
 
+## TODO:
+
+[ ] add timer  
+[ ] add link/qr to share seed with opponent  
+[ ] add move counter  
+[ ] add sound wrong/right check for bell  
 [ ] better shuffle with no-win check  
 [ ] make WASD/arrows control - it should be easier to remix  
-[ ] add timer  
-[ ] fix iphone layout(?)  
 [ ] add difficulty levels (more/less colors, 4x4? 2x2 for speed dro4ers?)  
 [ ] add restart button  
 [ ] add settings?  
@@ -28,6 +32,7 @@ https://bobanko.github.io/puck-rush/
 
 ## done
 
+[x] fix iphone layout(?)  
 [x] fix click rate for speed runners  
 [x] add seeded random to compete with others at the same level  
 [x] better shuffle with forward-back check  
@@ -37,22 +42,22 @@ https://bobanko.github.io/puck-rush/
 
 ## ui improvements
 
-[ ] make different target card cells
-[ ] add target card animations?  
+[ ] make different random design for target card cells  
+[ ] add target card animations? switching between levels  
 [ ] add win message/loose?  
 [ ] restyle bell?  
-[ ] make canvas animations instead html
+[ ] make canvas animations instead html?
 
 ## concepts for target cells
 
-[ ] crypto coins
-[ ] pool balls
-[ ] chess figs
-[ ] card hearts/diamonds/spades/clubs
+[ ] crypto coins  
+[ ] pool balls  
+[ ] chess figs  
+[ ] card hearts/diamonds/spades/clubs  
 [ ] dice 6,5,4... dominos - if two siblings?
 
-# comments
+## comments
 
-[ ] increase difficulty -- increase field
-[ ] bell is ambigous
+[ ] increase difficulty -- increase field  
+[ ] bell is ambigous  
 [ ] make more complex game -- like uno online with 2th, or make online mode for puck
