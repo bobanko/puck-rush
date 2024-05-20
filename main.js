@@ -317,7 +317,17 @@ function shufflePucks({ mtx, steps = 50 }) {
 let _mtxTarget = null;
 let _mtxPucks = null;
 let _emptyPos = null;
+let _level = 1;
+let _movesCurrent = 0;
+let _movesTotal = 0;
 function initGame() {
+  // _movesTotal += _movesCurrent;
+  _movesCurrent = 0; //reset
+
+  $level.textContent = _level;
+  $movesCurrent.textContent = _movesCurrent;
+  $movesTotal.textContent = _movesTotal;
+
   const mtxTarget = fillTarget();
   _mtxTarget = mtxTarget;
 
@@ -374,6 +384,7 @@ $bell.addEventListener("click", () => {
 
     // todo(vmyshko): regen
 
+    _level++;
     initGame();
   }
 });
@@ -426,4 +437,11 @@ function handleClickEvent(event) {
       updateCells({ mtx: _mtxPucks, $container: $cellGrid });
     },
   });
+
+  // todo(vmyshko): extract?
+  _movesCurrent++;
+  _movesTotal++;
+
+  $movesCurrent.textContent = _movesCurrent;
+  $movesTotal.textContent = _movesTotal;
 }

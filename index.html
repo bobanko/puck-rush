@@ -10,6 +10,12 @@
   </head>
   <body class="flex-col align-center justify-center">
     <section class="main flex-col align-center">
+      <header class="top-bar flex align-center" hidden>
+        <button>restart</button>
+        <button>settings</button>
+        <button>something</button>
+      </header>
+
       <div class="card-holder flex align-center justify-center">
         <svg id="$bell" class="bell">
           <use href="./bell.svg#bell" />
@@ -25,14 +31,25 @@
         </div>
       </div>
 
-      <template id="$tmplBoardCell">
-        <svg class="cell" data-color="red">
-          <use href="./puck.svg#puck" />
-        </svg>
-      </template>
-      <div id="$cellGrid" class="cell-grid gameboard-frame">
-        <!-- cells will be generated here -->
+      <div class="gameboard-container flex justify-center">
+        <template id="$tmplBoardCell">
+          <svg class="cell" data-color="red">
+            <use href="./puck.svg#puck" />
+          </svg>
+        </template>
+        <div id="$cellGrid" class="cell-grid gameboard-frame">
+          <!-- cells will be generated here -->
+        </div>
       </div>
+      <footer class="top-bar flex align-center">
+        <div>level <span id="$level">000</span></div>
+        <div>
+          moves: <span id="$movesCurrent">123</span>
+          <span class="fade">/</span>
+          <span id="$movesTotal" class="fade">123</span>
+        </div>
+        <div hidden>time: <span id="time"> 00:00</span></div>
+      </footer>
     </section>
   </body>
 </html>

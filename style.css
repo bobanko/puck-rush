@@ -2,12 +2,22 @@
 @import url(./helpers.css);
 @import url(./cell-grid.css);
 
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
+
 body {
   height: 100vh;
   height: 100dvh;
   width: 100vw;
 
   background-color: #94959d;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 30px;
+  line-height: 0.8em;
+}
+
+section {
+  width: inherit;
+  height: inherit;
 }
 
 @media only screen and (min-aspect-ratio: 1/2) {
@@ -16,7 +26,13 @@ body {
   }
 }
 
+.gameboard-container {
+  /* height: 50%; */
+  padding: 2vmin;
+}
+
 .gameboard-frame {
+  width: 100%;
   background-color: #4c4e4c;
   border: 1vmin solid black;
   border-radius: 10vmin;
@@ -47,8 +63,7 @@ body {
 }
 
 .main {
-  justify-content: space-evenly;
-  gap: 10vmin;
+  justify-content: space-between;
 }
 
 .target-card {
@@ -72,4 +87,33 @@ body {
   justify-content: space-around;
   align-items: center;
   gap: 5vmin;
+}
+
+header,
+footer {
+  width: 100%;
+  font-size: 5vmin;
+  justify-content: space-around;
+  background-color: #00000030;
+  box-sizing: border-box;
+
+  text-transform: uppercase;
+}
+
+footer {
+  padding: 2vmin;
+}
+
+.fade {
+  color: #0000004d;
+}
+
+button {
+  padding: 2vmin;
+  background-color: #0000001f;
+}
+
+button:active {
+  /* background-color: #ff68b4; */
+  background-color: #1d90ff;
 }
