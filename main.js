@@ -1,4 +1,5 @@
 import { createMatrix, deepCopyMatrix, seededRandom } from "./helpers.js";
+import { Timer } from "./timer.js";
 
 let rowSize = 3;
 let colSize = 3;
@@ -13,6 +14,7 @@ let seed;
   }
 }
 let random = seededRandom(seed);
+const timer = new Timer();
 
 {
   const $root = document.querySelector(":root");
@@ -313,6 +315,16 @@ function shufflePucks({ mtx, steps = 50 }) {
   return mtxShuffled;
 }
 
+timer.onUpdate((diff) => {
+  const timeStr = new Date(diff).toLocaleTimeString("en-US", {
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+  });
+
+  $timer.textContent = timeStr;
+});
+
 // todo(vmyshko): move to game.class or smth..
 let _mtxTarget = null;
 let _mtxPucks = null;
@@ -321,6 +333,8 @@ let _level = 1;
 let _movesCurrent = 0;
 let _movesTotal = 0;
 function initGame() {
+  timer.stop();
+
   // _movesTotal += _movesCurrent;
   _movesCurrent = 0; //reset
 
@@ -342,6 +356,8 @@ function initGame() {
   console.log("🆕 new level", mtxTarget, mtxPucksShuffled);
 
   createGameBoardCells(mtxPucksShuffled);
+
+  timer.start();
 }
 
 initGame();
@@ -385,6 +401,7 @@ $bell.addEventListener("click", () => {
     // todo(vmyshko): regen
 
     _level++;
+
     initGame();
   }
 });
