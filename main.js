@@ -12,7 +12,7 @@ let seed;
     [colSize, rowSize] = hashValue.split("x").map((value) => +value);
   }
 }
-const random = seededRandom(seed);
+let random = seededRandom(seed);
 
 {
   const $root = document.querySelector(":root");
@@ -388,6 +388,19 @@ $bell.addEventListener("click", () => {
     initGame();
   }
 });
+
+function restartGame() {
+  _level = 1;
+
+  _movesCurrent = 0;
+  _movesTotal = 0;
+
+  random = seededRandom(seed);
+
+  initGame();
+}
+
+$btnRestart.addEventListener("click", restartGame);
 
 // todo(vmyshko): click logic:
 // register click

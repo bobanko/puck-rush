@@ -10,10 +10,10 @@
   </head>
   <body class="flex-col align-center justify-center">
     <section class="main flex-col align-center">
-      <header class="top-bar flex align-center" hidden>
-        <button>restart</button>
-        <button>settings</button>
-        <button>something</button>
+      <header class="top-bar flex align-center">
+        <button id="$btnRestart">restart</button>
+        <button id="$btnSettings" class="fade">settings</button>
+        <button id="$btnSmth" hidden>something</button>
       </header>
 
       <div class="card-holder flex align-center justify-center">
@@ -43,8 +43,9 @@
       </div>
       <footer class="top-bar flex align-center">
         <div>level <span id="$level">000</span></div>
-        <div>
-          moves: <span id="$movesCurrent">123</span>
+        <div class="flex">
+          <span>moves:&nbsp;</span>
+          <span id="$movesCurrent">123</span>
           <span class="fade">/</span>
           <span id="$movesTotal" class="fade">123</span>
         </div>
